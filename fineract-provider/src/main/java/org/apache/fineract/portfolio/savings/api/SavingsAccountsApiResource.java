@@ -125,6 +125,7 @@ public class SavingsAccountsApiResource {
             @QueryParam("sqlSearch") @Parameter(description = "sqlSearch") final String sqlSearch,
             @QueryParam("externalId") @Parameter(description = "externalId") final String externalId,
             // @QueryParam("underHierarchy") final String hierarchy,
+            @QueryParam("birthday") @Parameter(description = "birthday") final String birthday,
             @QueryParam("offset") @Parameter(description = "offset") final Integer offset,
             @QueryParam("limit") @Parameter(description = "limit") final Integer limit,
             @QueryParam("orderBy") @Parameter(description = "orderBy") final String orderBy,
@@ -132,7 +133,7 @@ public class SavingsAccountsApiResource {
 
         context.authenticatedUser().validateHasReadPermission(SavingsApiConstants.SAVINGS_ACCOUNT_RESOURCE_NAME);
 
-        final SearchParameters searchParameters = SearchParameters.forSavings(sqlSearch, externalId, offset, limit, orderBy, sortOrder);
+        final SearchParameters searchParameters = SearchParameters.forSavings(sqlSearch, externalId, birthday, offset, limit, orderBy, sortOrder);
 
         final Page<SavingsAccountData> products = savingsAccountReadPlatformService.retrieveAll(searchParameters);
 
@@ -144,7 +145,7 @@ public class SavingsAccountsApiResource {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     @Operation(summary = "Submit new savings application", description = "Submits new savings application\n\n"
-            + "Mandatory Fields: clientId or groupId, productId, submittedOnDate\n\n"
+            + "Mandatory Fields: clientId or groupId, productId, submittedOnDate, birthday\n\n"
             + "Optional Fields: accountNo, externalId, fieldOfficerId\n\n"
             + "Inherited from Product (if not provided): nominalAnnualInterestRate, interestCompoundingPeriodType, interestCalculationType, interestCalculationDaysInYearType, minRequiredOpeningBalance, lockinPeriodFrequency, lockinPeriodFrequencyType, withdrawalFeeForTransfers, allowOverdraft, overdraftLimit, withHoldTax\n\n"
             + "Additional Mandatory Field if Entity-Datatable Check is enabled for the entity of type Savings: datatables")
